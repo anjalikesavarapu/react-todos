@@ -13,7 +13,9 @@ export default function TodoForm({addTodo}){
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodo(text);
+    if(text.length){
+      addTodo(text);
+    } 
     setText("");
   }
   return(
