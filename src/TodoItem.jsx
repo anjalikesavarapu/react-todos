@@ -17,7 +17,7 @@ export default function TodoItem({todo, removeTodo, toggle}) {
       }
       disablePadding
     >
-      <ListItemButton role={undefined} dense>
+      <ListItemButton dense>
         <ListItemIcon>
           <Checkbox
             edge="start"

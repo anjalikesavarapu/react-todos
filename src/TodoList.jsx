@@ -3,6 +3,9 @@ import List from '@mui/material/List';
 import { useEffect, useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoItem from './TodoItem';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 //const initialTodos = [
 //   {id:1, text:"Check cinc.py and API calls", isCompleted:false},
@@ -19,7 +22,9 @@ const getInitialData = () => {
 }
 
 export default function TodoList() {
-  const [todos, setTodos] =  useState(getInitialData)
+
+  const [todos, setTodos] =  useState(getInitialData);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() =>{
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -49,17 +54,42 @@ export default function TodoList() {
     })
   }
 
+  const handleFilter = (event) => {
+    setFilter(event.target.value);
+  }
+
+  const filteredTodos = todos.filter(todo => {
+    if(filter == "all") return true;
+    if(filter == "completed") return todo.isCompleted;
+    if(filter == "incomplete") return !todo.isCompleted;
+    return true;
+  })
   return(
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <h1>Todos</h1>
-      {todos.map((todo) => (
+      <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          value={filter}
+          displayEmpty
+          onChange={handleFilter}
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value={"all"}><em>All</em></MenuItem>
+          <MenuItem value={"completed"}>Completed</MenuItem>
+          <MenuItem value={"incomplete"}>Incomplete</MenuItem>
+        </Select>
+      </FormControl>
+
+      {filteredTodos.map((todo) => (
         <TodoItem 
           todo={todo} 
           key={todo.id} 
           removeTodo={() => removeTodo(todo.id)} 
-          toggle={() => toggleTodo(todo.id)}/>
+          toggle={() => toggleTodo(todo.id)}
+          />
       ))}
       <TodoForm addTodo={addTodo}/>
+      
     </List>
   );
 }
