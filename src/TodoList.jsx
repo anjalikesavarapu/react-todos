@@ -7,6 +7,10 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+
 //const initialTodos = [
 //   {id:1, text:"Check cinc.py and API calls", isCompleted:false},
 //   {id:2, text:"Plan the investements", isCompleted:false},
@@ -65,31 +69,37 @@ export default function TodoList() {
     return true;
   })
   return(
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ flexGrow: 1 }}>
       <h1>Todos</h1>
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <Select
-          value={filter}
-          displayEmpty
-          onChange={handleFilter}
-          inputProps={{ 'aria-label': 'Without label' }}
-        >
-          <MenuItem value={"all"}><em>All</em></MenuItem>
-          <MenuItem value={"completed"}>Completed</MenuItem>
-          <MenuItem value={"incomplete"}>Incomplete</MenuItem>
-        </Select>
-      </FormControl>
-
-      {filteredTodos.map((todo) => (
-        <TodoItem 
-          todo={todo} 
-          key={todo.id} 
-          removeTodo={() => removeTodo(todo.id)} 
-          toggle={() => toggleTodo(todo.id)}
-          />
-      ))}
-      <TodoForm addTodo={addTodo}/>
-      
+      <Grid container spacing={4}>
+      <Grid item xs={6}> <TodoForm addTodo={addTodo}/></Grid>
+      <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+        <Grid item xs={6}>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              value={filter}
+              displayEmpty
+              onChange={handleFilter}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              <MenuItem value={"all"}><em>All</em></MenuItem>
+              <MenuItem value={"completed"}>Completed</MenuItem>
+              <MenuItem value={"incomplete"}>Incomplete</MenuItem>
+            </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        {filteredTodos.map((todo) => (
+          <TodoItem 
+            todo={todo} 
+            key={todo.id} 
+            removeTodo={() => removeTodo(todo.id)} 
+            toggle={() => toggleTodo(todo.id)}
+            />
+        ))}
+      </Grid>
     </List>
+    </Grid>
+    </Box>
   );
-}
+}      
